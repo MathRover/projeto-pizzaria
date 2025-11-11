@@ -1,0 +1,106 @@
+# ==========================
+# 🐍 PYTHON
+# ==========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+venv.bak/
+
+# ==========================
+# 🗄️ DATABASES
+# ==========================
+*.db
+*.sqlite3
+*.db-journal
+*.sqlite
+
+# ==========================
+# 🧩 FRAMEWORKS
+# ==========================
+
+# Flask
+instance/
+.webassets-cache/
+*.pid
+
+# Django (caso use futuramente)
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+
+# ==========================
+# ⚙️ ENVIRONMENT & CONFIG
+# ==========================
+.env
+.env.*
+*.ini
+*.cfg
+*.toml
+
+# ==========================
+# 🧠 IDEs & EDITORS
+# ==========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# ==========================
+# 💾 OS FILES
+# ==========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================
+# 📦 DEPENDENCIES / BUILDS
+# ==========================
+__pypackages__/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==========================
+# 🧰 TESTS & COVERAGE
+# ==========================
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ==========================
+# 🧾 LOGS
+# ==========================
+*.log
+logs/
+log/

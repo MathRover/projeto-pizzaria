@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Despesas - Pizza Londrina{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Gerenciamento de Despesas</h2>
+    <a href="{{ url_for('main.nova_despesa') }}" class="btn btn-primary">
+        Nova Despesa
+    </a>
+</div>
+
+<!-- Estatísticas -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ estatisticas.total_despesas }}</h3>
+            <p>Total de Despesas</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>R$ {{ "%.2f"|format(estatisticas.total_valor) }}</h3>
+            <p>Valor Total</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ estatisticas.despesas_pendentes }}</h3>
+            <p>Pendentes</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ estatisticas.despesas_pagas }}</h3>
+            <p>Pagas</p>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="filters-card">
+    <div class="filters-header">
+        <h3>Filtros de Busca</h3>
+        <p>Encontre despesas rapidamente</p>
+    </div>
+    <form method="GET" action="{{ url_for('main.index') }}" class="filters-form">
+        <div class="filter-group">
+            <label for="busca">Buscar por Descrição</label>
+            <input type="text" id="busca" name="busca" value="{{ busca }}" placeholder="Digite a descrição...">
+        </div>
+        <div class="filter-group">
+            <label for="data_busca">Buscar por Data</label>
+            <input type="date" id="data_busca" name="data_busca" value="{{ data_busca }}" placeholder="Selecione uma data...">
+            <small class="filter-hint">Busca em vencimento, pagamento ou criação</small>
+        </div>
+        <div class="filter-group">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria">
+                <option value="">Todas as categorias</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat.nome }}" {% if categoria_filtro == cat.nome %}selected{% endif %}>
+                        {{ cat.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="">Todos os status</option>
+                <option value="pendente" {% if status_filtro == 'pendente' %}selected{% endif %}>Pendente</option>
+                <option value="pago" {% if status_filtro == 'pago' %}selected{% endif %}>Pago</option>
+                <option value="atrasado" {% if status_filtro == 'atrasado' %}selected{% endif %}>Atrasado</option>
+            </select>
+        </div>
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Limpar</a>
+        </div>
+    </form>
+</div>
+
+<!-- Tabela de Despesas -->
+<div class="table-card">
+    {% if despesas %}
+        <div class="table-responsive">
+            <table class="despesas-table">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Vencimento</th>
+                        <th>Pagamento</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for despesa in despesas %}
+                        <tr>
+                            <td>
+                                <strong>{{ despesa.descricao }}</strong>
+                                {% if despesa.observacoes %}
+                                    <br><small class="text-muted">{{ despesa.observacoes }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set cat = categorias|selectattr("nome", "equalto", despesa.categoria)|first %}
+                                {% if cat %}
+                                    <span class="badge" style="background-color: {{ cat.cor }};">
+                                        {{ despesa.categoria }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge">{{ despesa.categoria }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="valor">R$ {{ "%.2f"|format(despesa.valor) }}</td>
+                            <td>
+                                {% if despesa.data_vencimento %}
+                                    {{ despesa.data_vencimento.strftime('%d/%m/%Y') }}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if despesa.data_pagamento %}
+                                    {{ despesa.data_pagamento.strftime('%d/%m/%Y') }}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <select class="status-select" data-despesa-id="{{ despesa.id }}" onchange="alterarStatus({{ despesa.id }}, this.value)">
+                                    <option value="pendente" {% if despesa.status == 'pendente' %}selected{% endif %}>Pendente</option>
+                                    <option value="pago" {% if despesa.status == 'pago' %}selected{% endif %}>Pago</option>
+                                    <option value="atrasado" {% if despesa.status == 'atrasado' %}selected{% endif %}>Atrasado</option>
+                                </select>
+                            </td>
+                            <td class="actions">
+                                <a href="{{ url_for('main.editar_despesa', despesa_id=despesa.id) }}" class="btn-icon" title="Editar">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </a>
+                                <form method="POST" action="{{ url_for('main.excluir_despesa', despesa_id=despesa.id) }}" 
+                                      onsubmit="return confirm('Tem certeza que deseja excluir esta despesa?');" 
+                                      style="display: inline;">
+                                    <button type="submit" class="btn-icon btn-danger" title="Excluir">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </div>
+            <h3>Nenhuma despesa encontrada</h3>
+            <p>Comece criando sua primeira despesa!</p>
+            <a href="{{ url_for('main.nova_despesa') }}" class="btn btn-primary">Criar Despesa</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function alterarStatus(despesaId, novoStatus) {
+    fetch(`/despesa/${despesaId}/status`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: novoStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Erro ao alterar status: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao alterar status');
+    });
+}
+</script>
+{% endblock %}
+
