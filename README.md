@@ -207,7 +207,7 @@ python -c "from database.db import init_db; init_db(); from database.db import s
 
 ## 📝 Licença
 
-Este projeto é desenvolvido para fins educacionais e comerciais. Sinta-se livre para usar, modificar e distribuir.
+Este projeto foi desenvolvido por Matheus Rover
 
 ## 🤝 Contribuição
 
@@ -220,5 +220,3 @@ Contribuições são bem-vindas! Para contribuir:
 5. Abra um Pull Request
 
 ---
-
-**🎉 Sistema pronto para uso! Boa sorte com sua pizzaria! 🍕**
