@@ -1,6 +1,3 @@
-"""
-Rotas da aplicação Flask
-"""
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime, date
 from peewee import fn
@@ -113,7 +110,6 @@ def editar_despesa(despesa_id):
     
     if request.method == 'POST':
         try:
-            # Converter datas
             data_vencimento = None
             data_pagamento = None
             

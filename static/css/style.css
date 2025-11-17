@@ -1,9 +1,3 @@
-/* ============================================
-   Sistema de Fechamento de Caixa - Pizzaria
-   CSS Moderno e Visual
-   ============================================ */
-
-/* Reset e Variáveis */
 :root {
     --primary-color: #ff6b35;
     --primary-dark: #e55a2b;
@@ -26,7 +20,7 @@
     --transition: all 0.3s ease;
 }
 
-/* Modo Escuro */
+
 [data-theme="dark"] {
     --primary-color: #ff6b35;
     --primary-dark: #e55a2b;
@@ -67,7 +61,7 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
+
 .header {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -149,13 +143,13 @@ body {
     color: var(--primary-color);
 }
 
-/* Main Content */
+
 .main {
     padding: 2rem 0;
     min-height: calc(100vh - 200px);
 }
 
-/* Cards */
+
 .card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -166,7 +160,7 @@ body {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Page Header */
+
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -185,7 +179,7 @@ body {
     font-size: 1.8rem;
 }
 
-/* Buttons */
+
 .btn {
     display: inline-block;
     padding: 0.75rem 1.5rem;
@@ -228,7 +222,7 @@ body {
     background: #c82333;
 }
 
-/* Statistics Grid */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -282,7 +276,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* Filters */
+
 .filters-card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -423,7 +417,7 @@ body {
     }
 }
 
-/* Table */
+
 .table-card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -530,7 +524,7 @@ body {
     font-style: italic;
 }
 
-/* Form */
+
 .form-card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -588,7 +582,6 @@ body {
     justify-content: flex-end;
 }
 
-/* Flash Messages */
 .flash-messages {
     margin-bottom: 1.5rem;
 }
@@ -686,7 +679,7 @@ body {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .header-content {
         flex-direction: column;
@@ -725,7 +718,6 @@ body {
     }
 }
 
-/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -740,4 +732,3 @@ body {
 .form-card {
     animation: fadeIn 0.5s ease;
 }
-
